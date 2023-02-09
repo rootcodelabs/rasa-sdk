@@ -240,7 +240,7 @@ class ActionQueryKnowledgeBase(Action):
             self.knowledge_base.get_object(object_type, object_name)
         )
 
-        if not object_of_interest or attribute not in object_of_interest:
+        if object_of_interest is None or attribute not in object_of_interest:
             dispatcher.utter_message(response="utter_ask_rephrase")
             return [SlotSet(SLOT_MENTION, None)]
 
