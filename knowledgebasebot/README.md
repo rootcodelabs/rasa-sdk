@@ -23,6 +23,9 @@ rasa train
 ```
 This will store a zipped model file in `models/`.
 
+To pin a specific version of rasa_sdk, replace rasa_sdk folder with rasa_sdk in 'Lib/site-packages/rasa_sdk'
+
+
 Start the action server by
 ```
 rasa run actions
