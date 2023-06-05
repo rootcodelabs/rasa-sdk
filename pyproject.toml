@@ -9,7 +9,7 @@ exclude = "((.eggs | .git | .mypy_cache | .pytest_cache | build | dist))"
 
 [tool.poetry]
 name = "rasa-sdk"
-version = "3.5.0a2.dev1"
+version = "3.6.0a1"
 description = "Open source machine learning framework to automate text- and voice-based conversations: NLU, dialogue management, connect to Slack, Facebook, and more - Create chatbots and voice assistants"
 authors = [ "Rasa Technologies GmbH <hi@rasa.com>",]
 maintainers = [ "Tom Bocklisch <tom@rasa.com>",]
@@ -62,26 +62,48 @@ directory = "misc"
 name = "Miscellaneous internal changes"
 showcontent = false
 
+[tool.mypy]
+ignore_missing_imports = true
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.ruff]
+ignore = [ "D100", "D104", "D105", "RUF005",]
+line-length = 88
+select = [ "D", "E", "F", "W", "RUF",]
+
 [tool.poetry.dependencies]
-python = ">=3.7,<3.11"
+python = ">=3.8,<3.11"
 coloredlogs = ">=10,<16"
 sanic = "^21.12.0"
 typing-extensions = ">=4.1.1,<5.0.0"
 Sanic-Cors = "^2.0.0"
 prompt-toolkit = "^3.0,<3.0.29"
 "ruamel.yaml" = ">=0.16.5,<0.18.0"
+websockets = ">=10.0,<11.0"
+pluggy = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest-cov = "^4.0.0"
 coveralls = "^3.0.1"
-pytest = "^7.2.1"
+pytest = "^7.3.1"
 black = "22.12.0"
-flake8 = "^5.0.4"
-flake8-docstrings = "^1.5.0"
 questionary = ">=1.5.1,<1.11.0"
 towncrier = "^22.8.0"
 toml = "^0.10.0"
 pep440-version-utils = "^0.3.0"
 semantic_version = "^2.8.5"
-mypy = "^0.991"
+mypy = "^1.3"
 sanic-testing = "^22.3.0, <22.9.0"
+
+[tool.pytest.ini_options]
+python_functions = "test_"
+asyncio_mode = "auto"
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.0.256,<0.0.268"
+pytest-asyncio = "^0.21.0"

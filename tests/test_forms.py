@@ -1,4 +1,7 @@
+import logging
+
 import pytest
+from pytest import LogCaptureFixture
 from typing import Text, Dict, Any, List, Optional
 
 from rasa_sdk import Tracker
@@ -190,7 +193,8 @@ async def test_validation_action_outside_forms_with_form_active_loop():
             "slot1": {
                 "type": "any",
                 "mappings": [
-                    # this mapping means that the mapping should be validated by ValidationAction for `form1`
+                    # this mapping means that the mapping should
+                    # be validated by ValidationAction for `form1`
                     {
                         "type": "from_entity",
                         "entity": "name",
@@ -609,7 +613,8 @@ async def test_extract_and_validate_global_slot():
             # both are extracted as follow
             {"state": "california", "city": "san francisco"},
             # validate_state turns "california" to "CA"
-            # validate_city sees "state" == "CA" and turns "san francisco" to "San Francisco"
+            # validate_city sees "state" == "CA" and
+            # turns "san francisco" to "San Francisco"
             [["state", "CA"], ["city", "San Francisco"], [REQUESTED_SLOT, None]],
         ),
         (
@@ -766,7 +771,10 @@ async def test_extract_slot_only():
     ],
 )
 async def test_warning_for_slot_extractions(
-    required_slots: List[Text], domain: DomainDict, next_slot_events: List[EventType]
+    required_slots: List[Text],
+    domain: DomainDict,
+    next_slot_events: List[EventType],
+    caplog: LogCaptureFixture,
 ):
     custom_slot = "my_slot"
     unvalidated_value = "some value"
@@ -807,8 +815,14 @@ async def test_warning_for_slot_extractions(
     )
 
     dispatcher = CollectingDispatcher()
-    with pytest.warns(UserWarning):
+    with caplog.at_level(logging.WARNING):
         events = await form.run(dispatcher=dispatcher, tracker=tracker, domain=domain)
+
+        warning_msg = (
+            f"Skipping validation for `{custom_slot}`: "
+            f"there is no validation method specified."
+        )
+        assert warning_msg in caplog.records[0].message
 
     assert events == [SlotSet(custom_slot, unvalidated_value), *next_slot_events]
 

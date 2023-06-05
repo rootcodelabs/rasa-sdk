@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as base
+FROM ubuntu:22.04 as base
 
 # hadolint ignore=DL3005,DL3008
 RUN apt-get update -qq \
@@ -26,7 +26,7 @@ RUN apt-get update -qq \
 
 # install poetry
 # keep this in sync with the version in pyproject.toml and Dockerfile
-ENV POETRY_VERSION 1.2.2
+ENV POETRY_VERSION 1.4.2
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL https://install.python-poetry.org | python
 ENV PATH "/root/.local/bin:/opt/venv/bin:${PATH}"
